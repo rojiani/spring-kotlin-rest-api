@@ -8,9 +8,8 @@ import com.fasterxml.jackson.annotation.JsonCreator
  * @property screenName The screen name of the user
  * @property email The email address of the user
  */
-data class NewUser
-    @JsonCreator constructor(
-        val username: String,
-        val screenName: String,
-        val email: String
-    )
+data class NewUser @JsonCreator constructor(
+    val username: String,
+    val screenName: String,
+    val email: String
+)

@@ -37,7 +37,6 @@ class FirstController {
      * @param operation The operation to perform (query param)
      */
     @RequestMapping("/string/{value}")
-    @ResponseStatus(HttpStatus.CREATED)
     fun manipulateString(
         @PathVariable value: String,
         @RequestParam(name = "operation", defaultValue = "none") operation: String
@@ -52,15 +51,14 @@ class FirstController {
      * Pretend to create a new user
      * @param user The details of the user to create
      */
-    @RequestMapping(value = "/user", method = arrayOf(RequestMethod.POST))
-    fun createUser(@RequestBody user: NewUser): User {
-        return User(
-            username = user.username,
-            screenName = user.screenName,
-            email = user.email,
-            registered = Instant.now()
-        )
-    }
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/user", method = [RequestMethod.POST])
+    fun createUser(@RequestBody user: NewUser): User = User(
+        username = user.username,
+        screenName = user.screenName,
+        email = user.email,
+        registered = Instant.now()
+    )
 
     /** Cause an error to occur */
     @RequestMapping("/raiseError")
