@@ -2,6 +2,7 @@ package tutorial
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 
@@ -12,7 +13,11 @@ import org.springframework.context.annotation.Configuration
  */
 @EnableAutoConfiguration
 @Configuration
-class Application
+class Application {
+
+    @Bean
+    fun controller() = FirstController()
+}
 
 /**
  * Run the application
