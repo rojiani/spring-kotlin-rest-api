@@ -1,0 +1,9 @@
+ext {
+    /* Source Dependency Versions */
+    jacksonVersion = '2.10.0'
+    kotlinVersion = '1.3.50'
+    springBootVersion = '2.2.0.RELEASE'
+
+    /* Test Dependency Versions */
+    junitVersion = '5.4.2'
+}

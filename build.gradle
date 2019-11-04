@@ -1,52 +1,67 @@
+apply from: 'dependencies.gradle'
+
 buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
-    classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
-  }
+    apply from: 'dependencies.gradle'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+    }
 }
 
+apply plugin: 'idea'
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
 apply plugin: 'org.springframework.boot'
 
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
-
 
 dependencies {
-  // Kotlin Dependencies
-  compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-  compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-  testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    apply from: 'dependencies.gradle'
 
-  // Spring Dependencies
-  compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion") {
-    exclude module: "spring-boot-starter-tomcat"
-  }
-  compile "org.springframework.boot:spring-boot-starter-jetty:$springBootVersion"
-  compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
-  // Jackson Dependencies
-  compile "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
-  compile "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
-  compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
-  runtime "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion"
-  runtime "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
-  runtime "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
-}
+    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    implementation "org.springframework.boot:spring-boot-starter-jetty:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
 
-task wrapper(type: Wrapper) {
-  gradleVersion = "4.5.1"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    implementation "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    runtime "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion"
+    runtime "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
+    runtime "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
+
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 }
 
 test {
-  testLogging {
-    exceptionFormat = 'full'
-    events = ["passed", "failed", "skipped"]
-  }
+    useJUnitPlatform()
+
+    testLogging {
+        exceptionFormat = 'full'
+        events = ["passed", "failed", "skipped"]
+    }
+
+    // Fail the 'test' task on the first test failure
+    failFast = true
+}
+
+idea {
+    module {
+        // When building the project in IntelliJ, use the same output path as Gradle.
+        inheritOutputDirs = false
+        outputDir = compileJava.destinationDir
+        testOutputDir = compileTestJava.destinationDir
+    }
 }

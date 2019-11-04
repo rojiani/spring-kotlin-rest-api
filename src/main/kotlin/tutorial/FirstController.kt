@@ -52,7 +52,7 @@ class FirstController {
      * @param user The details of the user to create
      */
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "/user", method = [RequestMethod.POST])
+    @RequestMapping(value = ["/user"], method = [RequestMethod.POST])
     fun createUser(@RequestBody user: NewUser): User = User(
         username = user.username,
         screenName = user.screenName,
